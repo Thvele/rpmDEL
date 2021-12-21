@@ -1,0 +1,16 @@
+﻿@model IEnumerable<rpmDEL.Models.FileModel>
+
+@{ 
+    ViewData["Title"] = "Добавление файлов";
+}
+<h3>Выберите файл для загрузки</h3>
+<form asp-action="AddFile" method="post" enctype="multipart/form-data">
+    <input type="file" name="file"/>
+    <input type="submit" value="Отправить"/>
+</form>
+
+<h3>Files</h3>
+@foreach(var file in Model)
+ {
+    <p><img scr="@Url.Content(file._path)"></p>
+ }

@@ -1,0 +1,201 @@
+﻿@model rpmDEL.Models.Post
+@{
+    ViewData["Title"] = "Удаление поста";
+}
+
+@using System.Security.Claims
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="~/images/icons/favicon.ico" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/animsition/css/animsition.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/daterangepicker/daterangepicker.css">
+    <!--===============================================================================================-->
+
+    <link rel="stylesheet" type="text/css" href="~/css/profile.css">
+    <link rel="stylesheet" type="text/css" href="~/css/mainpage.css">
+    <link rel="stylesheet" type="text/css" href="~/css/main.css">
+    <link rel="stylesheet" type="text/css" href="~/css/util.css">
+
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        #middle {
+            display: table;
+            width: 100%;
+            height: 100%;
+            margin-top: 10px;
+        }
+
+        #content {
+            display: table-cell;
+            vertical-align: top;
+            width: 5%;
+            background: rgb(80,80,80);
+        }
+
+        #sidebar {
+            display: table-cell;
+            width: 95%;
+            background: rgba(80,80,80,0.5);
+        }
+
+        .round {
+            border-radius: 100px;
+            border: 3px solid white;
+            box-shadow: 0 0 7px #666;
+        }
+
+        #post {
+            width: 80%;
+            height: fit-content;
+            border: 2px solid black;
+            position: relative;
+            margin: 5px auto 5px;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            /*            border-bottom-right-radius: 12px;
+            border-bottom-left-radius: 12px;*/
+            font-family: 'Century Gothic';
+        }
+
+            #post .posttitle {
+                color: white;
+                background: gray;
+                width: -webkit-fill-available;
+                height: auto;
+                border-style: solid;
+                border-color: gray;
+                text-align: center;
+                font-family: 'Century Gothic';
+                border-top-left-radius: 12px;
+                border-top-right-radius: 12px;
+                font-size: 16px;
+            }
+
+            #post .postmessage {
+                text-align: left;
+                font-size: 12px;
+                background: gray;
+                color: #000;
+                font-weight: bold;
+                display: flex;
+                word-break: break-all;
+                margin: 3px 3px 3px 3px;
+            }
+
+        .postmessageimg {
+            max-height: 250px;
+            max-width: 250px;
+        }
+    </style>
+</head>
+
+<header class="titleheader" style="min-width: 100%; min-height: 100%;">
+    <form>
+        <div class="form-inline form-group">
+            <label class="title" style="margin-right: 20px;">Twitter navernoye</label>
+            @if (User.IsInRole("admin"))
+            {
+                <a class="logout" asp-action="main" asp-controller="home" style="margin-left: 3px;"><span class="entypo-vcard"></span></a>
+            }
+            <a class="logout" asp-action="profile" asp-controller="home" style="margin-left: 3px;"><span class="entypo-user"></span></a>
+            <a class="logout" asp-action="ProfileEdit" asp-controller="home" asp-route-id="@(User.FindFirst(x => x.Type == ClaimTypes.SerialNumber).Value)" style="margin-left: 3px"><span class="entypo-cog"></span></a>
+            <a class="logout" asp-action="logout" asp-controller="acc"><span class="entypo-logout"></span></a>
+        </div>
+    </form>
+</header>
+
+<body style="min-width: 100%; min-height: 100%;">
+    <div id="middle">
+            <section id="content">
+                <div style="width: 100px; height: 100px; display: inline-block;">
+                    <div style="color: white; font-size: 16px">ID поста: @Model.id</div>
+                    <div style="color: white; font-size: 16px">UserID: @Model.UserID</div>
+                </div>
+            </section>
+
+            <aside id="sidebar">
+                <div>
+                    <form class="login100-form" asp-action="RequestDeletePost" asp-controller="apanel" asp-anti-forgery="true" method="post" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="id" />
+                        <div id="post" style="background: gray;">
+                            <div class="posttitle form-inline form-group" style="height: fit-content; background: gray; height: fit-content; text-align: center; color: wheat">
+                                <div style=" margin-left: auto; word-break: break-word">
+                                    @Model.Title
+                                </div>
+                                <a class="logout form-group" style=" margin-left: auto; font-size: 14px;"><span style="color: gray" class="entypo-pencil"></span></a>
+                                <a class="logout form-group" style="margin-right: 3px; margin-left: 4px; font-size: 14px "><span style="color: gray" class="entypo-trash"></span></a>
+                            </div>
+                            <div class="postmessage">
+                                @Model.Message
+                            </div>
+                            @if (Model.img1 != null || Model.img2 != null || Model.img3 != null || Model.img4 != null || Model.img5 != null)
+                            {
+                                <div class="postmessage">
+                                    <p style="color: black;"><u>Приложенные фотографии:</u></p>
+                                </div>
+
+                                <div class="form-inline form-group" style="background: gray">
+                                    @if (Model.img1 != null)
+                                    {
+                                        <img class="postmessageimg form-inline" style="content: url(@Model.img1); margin: 0 5px 0 5px">
+                                    }
+                                    @if (Model.img2 != null)
+                                    {
+                                        <img class="postmessageimg form-inline" style="content: url(@Model.img2); margin: 0 5px 0 5px">
+                                    }
+                                    @if (Model.img3 != null)
+                                    {
+                                        <img class="postmessageimg form-inline" style="content: url(@Model.img3); margin: 0 5px 0 5px">
+                                    }
+                                    @if (Model.img4 != null)
+                                    {
+                                        <img class="postmessageimg form-inline" style="content: url(@Model.img4); margin: 0 5px 0 5px">
+                                    }
+                                    @if (Model.img5 != null)
+                                    {
+                                        <img class="postmessageimg form-inline" style="content: url(@Model.img5); margin: 0 5px 0 5px">
+                                    }
+                                </div>
+                            }
+                        </div>
+                        <div class="container-login100-form-btn">
+                            <input type="submit" class="login100-form-btn" value="Delete" hidden>
+                            <button class="login100-form-btn" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0; background: black;">
+                                Удалить
+                            </button>
+                        </div>
+                        <div class="text-center w-full p-t-23">
+                            <a class="txt1" name="back" asp-action="posttable" asp-controller="apanel" style="color: black">
+                                НАЗАД
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </aside>
+    </div>
+</body>

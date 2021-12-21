@@ -1,0 +1,158 @@
+﻿@model IEnumerable<rpmDEL.Models.Post>
+@{
+    ViewData["Title"] = "Все роли";
+}
+
+@using System.Security.Claims
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="~/images/icons/favicon.ico" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/animsition/css/animsition.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/daterangepicker/daterangepicker.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/css/util.css">
+    <link rel="stylesheet" type="text/css" href="~/css/main.css">
+    <link rel="stylesheet" type="text/css" href="~/css/mainpage.css">
+
+</head>
+
+
+<header class="titleheader" style="min-width: 100%; min-height: 100%;">
+    <form>
+        <div class="form-inline form-group">
+            <label class="title" style="margin-right: 20px;">Twitter navernoye</label>
+            @if (User.IsInRole("admin"))
+            {
+                <a class="logout" asp-action="main" asp-controller="home" style="margin-left: 3px;"><span class="entypo-vcard"></span></a>
+            }
+            <a class="logout" asp-action="profile" asp-controller="home" style="margin-left: 3px;"><span class="entypo-user"></span></a>
+            <a class="logout" asp-action="ProfileEdit" asp-controller="home" asp-route-id="@(User.FindFirst(x => x.Type == ClaimTypes.SerialNumber).Value)" style="margin-left: 3px"><span class="entypo-cog"></span></a>
+            @*<a class="logout" asp-action="roletable" asp-controller="apanel" style="font-size: 16px">Таблица ролей</a>*@
+            <a class="logout" asp-action="logout" asp-controller="acc"><span class="entypo-logout"></span></a>
+        </div>
+    </form>
+</header>
+
+
+<body>
+    <div style="height: auto; background: rgba(255,255,255,0.5); margin: -10px,-10px,-10px,-10px">
+        <table class="tablemain">
+            <tr>
+                <td>ID</td>
+                <td>UserID</td>
+                <td style="min-width: 100px; max-width:100px; word-break: break-word">Заголовок</td>
+                <td style="min-width: 800px; max-width: 800px; word-break: break-word;">Основной текст</td>
+                <td>Вложение1</td>
+                <td>Вложение2</td>
+                <td>Вложение3</td>
+                <td>Вложение4</td>
+                <td>Вложение5</td>
+                <td>Изменить</td>
+                <td>Удалить</td>
+                <td><a asp-action="requestpostadd" asp-controller="apanel"><span class="entypo-plus" style="font-size: 24px"></span></a></td>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.id</td>
+                    <td>@item.UserID</td>
+                    <td style="min-width: 100px; max-width:100px; word-break: break-word">@item.Title</td>
+                    <td style="min-width: 800px; max-width: 800px; word-break: break-word; ">@item.Message</td>
+
+                    @if (item.img1 != null)
+                    {
+                        <td><img style="height: 50px; width: 50px; content: url('@item.img1')" /></td>
+                    }
+                    else
+                    {
+                        <td><img style="height: 50px; width: 50px; content: url('/images/none.jpg')" /></td>
+                    }
+
+                    @if (item.img2 != null)
+                    {
+                        <td><img style="height: 50px; width: 50px; content: url('@item.img2')" /></td>
+                    }
+                    else
+                    {
+                        <td><img style="height: 50px; width: 50px; content: url('/images/none.jpg')" /></td>
+                    }
+
+                    @if (item.img3 != null)
+                    {
+                        <td><img style="height: 50px; width: 50px; content: url('@item.img3')" /></td>
+                    }
+                    else
+                    {
+                        <td><img style="height: 50px; width: 50px; content: url('/images/none.jpg')" /></td>
+                    }
+
+                    @if (item.img4 != null)
+                    {
+                        <td><img style="height: 50px; width: 50px; content: url('@item.img4')" /></td>
+                    }
+                    else
+                    {
+                        <td><img style="height: 50px; width: 50px; content: url('/images/none.jpg')" /></td>
+                    }
+
+                    @if (item.img5 != null)
+                    {
+                        <td><img style="height: 50px; width: 50px; content: url('@item.img5')" /></td>
+                    }
+                    else
+                    {
+                        <td><img style="height: 50px; width: 50px; content: url('/images/none.jpg')" /></td>
+                    }
+
+                    <td><a asp-action="requestpostedit" asp-controller="apanel" asp-route-id="@item.id"><span class="entypo-pencil" style="font-size: 24px"></span></a></td>
+                    <td><a asp-action="requestpostdelete" asp-controller="apanel" asp-route-id="@item.id"><span class="entypo-trash" style="font-size: 24px"></span></a></td>
+                    <td></td>
+                </tr>
+            }
+        </table>
+    </div>
+
+
+    <script src="~/vendor/jquery/jquery-3.2.1.min.js"></script>
+
+    <script src="~/vendor/animsition/js/animsition.min.js"></script>
+
+    <script src="~/vendor/bootstrap/js/popper.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="~/vendor/select2/select2.min.js"></script>
+
+    <script src="~/vendor/daterangepicker/moment.min.js"></script>
+    <script src="~/vendor/daterangepicker/daterangepicker.js"></script>
+
+    <script src="~/vendor/countdowntime/countdowntime.js"></script>
+
+    <script src="~/js/main.js"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-23581568-13');
+    </script>
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"rayId":"696cb7772a3d1630","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2021.9.0","si":100}'></script>
+</body>

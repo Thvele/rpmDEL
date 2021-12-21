@@ -1,0 +1,201 @@
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "Все пользователи";
+}
+
+@using System.Security.Claims
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="~/images/icons/favicon.ico" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/animsition/css/animsition.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/vendor/daterangepicker/daterangepicker.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/css/util.css">
+    <link rel="stylesheet" type="text/css" href="~/css/main.css">
+    <link rel="stylesheet" type="text/css" href="~/css/mainpage.css">
+
+</head>
+
+
+<header class="titleheader" style="min-width: 100%; min-height: 100%;">
+    <form>
+        <div class="form-inline form-group">
+            <label class="title" style="margin-right: 20px;">Twitter navernoye</label>
+            @if (User.IsInRole("admin"))
+            {
+                <a class="logout" asp-action="main" asp-controller="home" style="margin-left: 3px;"><span class="entypo-vcard"></span></a>
+            }
+            else
+            {
+                <a class="logout" asp-action="userlist" asp-controller="home" style="margin-left: 3px;"><span class="entypo-vcard"></span></a>
+            }
+            <a class="logout" asp-action="profile" asp-controller="home" style="margin-left: 3px;"><span class="entypo-user"></span></a>
+            <a class="logout" asp-action="ProfileEdit" asp-controller="home" asp-route-id="@(User.FindFirst(x => x.Type == ClaimTypes.SerialNumber).Value)" style="margin-left: 3px"><span class="entypo-cog"></span></a>
+            @*<a class="logout" asp-action="roletable" asp-controller="apanel" style="font-size: 16px">Таблица ролей</a>*@
+            <a class="logout" asp-action="posttable" asp-controller="apanel" style="font-size: 16px">Таблица постов</a>
+            <a class="logout" asp-action="logout" asp-controller="acc"><span class="entypo-logout"></span></a>
+        </div>
+    </form>
+</header>
+
+
+<body>
+
+    <form method="get" asp-action="main" asp-controller="home" style="margin-top: 10px">
+        <figure id="card" style="height: auto">
+            <div class="form-inline form-group">
+                <input class="input-mini" type="number" name="id" min="1" value="@Model.FilterViewModel.SelectID" placeholder="ID" style="margin-left: 3px">
+                <input class="input-mini" type="text" name="lgn" min="1" value="@Model.FilterViewModel.SelectLogin" placeholder="Login" style="margin-left: 5px">
+                <input type="submit" value="Поиск" class="btn" />
+            </div>
+        </figure>
+    </form>
+
+    <div style="height: auto; background: rgba(255,255,255,0.5); margin: -10px,-10px,-10px,-10px">
+        <table class="tablemain">
+            <tr>
+                <td>
+                    <a asp-action="main" asp-controller="home" asp-route-sortOrder="@Model.SortViewModel.IdSort" asp-route-id="@Model.FilterViewModel.SelectID" asp-route-login="@Model.FilterViewModel.SelectLogin">
+                        ID
+                    </a>
+                </td>
+                <td>Аватарка</td>
+                <td>
+                    <a asp-action="main" asp-controller="home" asp-route-sortOrder="@Model.SortViewModel.LoginSort" asp-route-id="@Model.FilterViewModel.SelectID" asp-route-login="@Model.FilterViewModel.SelectLogin">
+                        Логин
+                    </a>
+                </td>
+                <td>Пароль</td>
+                <td>
+                    <a asp-action="main" asp-controller="home" asp-route-sortOrder="@Model.SortViewModel.EmailSort" asp-route-id="@Model.FilterViewModel.SelectID" asp-route-login="@Model.FilterViewModel.SelectLogin">
+                        Почта
+                    </a>
+                </td>
+                <td>Фамилия</td>
+                <td>Имя</td>
+                <td>Отчество</td>
+                <td>Дата регистрации</td>
+                <td>Описание</td>
+                <td>ID роли</td>
+                <td>Ссылка</td>
+                <td>Изменить</td>
+                <td>Удалить</td>
+                <td><a asp-action="requestprofileadd" asp-controller="apanel"><span class="entypo-plus" style="font-size: 24px"></span></a></td>
+            </tr>
+            @foreach (var item in Model.users)
+            {
+        <tr>
+            <td>@item._ID</td>
+            <td><img style="height: 50px; width: 50px; content: url('@item._imgpath')" /></td>
+            <td>@item._login</td>
+            <td>@item._pass</td>
+            <td>@item._EMail</td>
+            <td>@item._Fam</td>
+            <td>@item._Name</td>
+            <td>@item._Surname</td>
+            <td>@item._regday</td>
+            <td>@item._Description</td>
+            <td>@item.RoleId</td>
+            @if (item._ID != Convert.ToInt32(User.FindFirst(x => x.Type == ClaimTypes.SerialNumber).Value))
+            {
+                <td><a asp-action="requestprofile" asp-route-id="@item._ID"><span class="entypo-right-circled" style="font-size: 24px"></span></a></td>
+            }
+            else
+            {
+                <td><a asp-action="profile" asp-controller="home"><span class="entypo-right-circled" style="font-size: 24px"></span></a></td>
+            }
+
+            @if (item._ID != Convert.ToInt32(User.FindFirst(x => x.Type == ClaimTypes.SerialNumber).Value))
+            {
+                <td><a asp-action="requestprofileedit" asp-controller="apanel" asp-route-id="@item._ID" asp-route-oldlogin="@item._login"><span class="entypo-pencil" style="font-size: 24px"></span></a></td>
+            }
+            else
+            {
+                @foreach (var item1 in Model.users.Where(p => p._ID == (Convert.ToInt32(User.FindFirst(x => x.Type == ClaimTypes.SerialNumber).Value))))
+                {
+                    <td><a asp-action="ProfileEdit" asp-controller="home" asp-route-id="@item1._ID" asp-route-oldlogin="@item1._login"><span class="entypo-cog" style="font-size: 24px"></span></a></td>
+                }
+            }
+
+            @if (item._ID != Convert.ToInt32(User.FindFirst(x => x.Type == ClaimTypes.SerialNumber).Value))
+            {
+                <td><a asp-action="requestprofiledelete" asp-controller="apanel" asp-route-id="@item._ID"><span class="entypo-trash" style="font-size: 24px"></span></a></td>
+            }
+            else
+            {
+                <td>низя.</td>
+            }
+        </tr>
+            }
+        </table>
+    </div>
+    @if (Model.PageViewModel.HasNextPage)
+    {
+        <div style="margin-top: 5px">
+            <a asp-action="main"
+               asp-controller="home"
+               asp-route-page="@(Model.PageViewModel._PageNumber+1)"
+               asp-route-Id="@(Model.FilterViewModel.SelectID)"
+               asp-route-lgn="@(Model.FilterViewModel.SelectLogin)"
+               asp-route-sortOrder="@(Model.SortViewModel._CurrentSort)"
+               class="nextpage">Вперёд</a>
+        </div>
+    }
+
+    @if (Model.PageViewModel.HasPreviousPage)
+    {
+        <div style="margin-top: 5px">
+            <a asp-action="main"
+               asp-controller="home"
+               asp-route-page="@(Model.PageViewModel._PageNumber-1)"
+               asp-route-Id="@(Model.FilterViewModel.SelectID)"
+               asp-route-lgn="@(Model.FilterViewModel.SelectLogin)"
+               asp-route-sortOrder="@(Model.SortViewModel._CurrentSort)"
+               class="pervpage">Назад</a>
+        </div>
+    }
+
+
+    <script src="~/vendor/jquery/jquery-3.2.1.min.js"></script>
+
+    <script src="~/vendor/animsition/js/animsition.min.js"></script>
+
+    <script src="~/vendor/bootstrap/js/popper.js"></script>
+    <script src="~/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="~/vendor/select2/select2.min.js"></script>
+
+    <script src="~/vendor/daterangepicker/moment.min.js"></script>
+    <script src="~/vendor/daterangepicker/daterangepicker.js"></script>
+
+    <script src="~/vendor/countdowntime/countdowntime.js"></script>
+
+    <script src="~/js/main.js"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-23581568-13');
+    </script>
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"rayId":"696cb7772a3d1630","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2021.9.0","si":100}'></script>
+</body>

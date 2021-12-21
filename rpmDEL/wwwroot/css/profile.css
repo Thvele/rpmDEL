@@ -1,0 +1,221 @@
+﻿/* ==================== GLOBAL SETTINGS ====================*/
+
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
+@import url(https://weloveiconfonts.com/api/?family=entypo);
+/* entypo */
+[class*="entypo-"]:before {
+    font-family: 'entypo', sans-serif;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+    *:after {
+        content: '';
+        clear: both;
+        display: table;
+    }
+
+html {
+    font-family: 'Montserrat';
+    font-size: 14px;
+}
+
+body {
+    background-color: #8F96A0;
+    height: 100vh;
+}
+
+/* ==================== USER PROFILE ====================*/
+
+figure#card {
+    position: relative;
+    margin: auto;
+    margin-top: 100px;
+    width: 405px;
+    height: 500px;
+    background-color: #fff;
+    box-shadow: 0px 50px 90px 0px rgba(32,37,58,0.50);
+}
+
+/* ~~~~~~~~~~~~~~~ USER PROFILE > INNER ~~~~~~~~~~~~~~*/
+
+div.left, div.right {
+    position: relative;
+    float: left;
+    width: 50%;
+    height: 100%;
+}
+
+/* ~~~~~~~~~~~~~~~ USER PROFILE > INNER => LEFT ~~~~~~~~~~~~~~*/
+
+div.left {
+    height: 114%;
+}
+
+    div.left img {
+        width: 100px;
+        height: 100px;
+        border: solid;
+        border-color: black;
+        border-image-width: 4px;
+    }
+
+    div.left svg {
+        position: absolute;
+    }
+
+    div.left .clip {
+        -webkit-clip-path: polygon(0px 430px,405px 570px,405px 0px,0px 0px);
+        clip-path: url("#clipPolygon");
+    }
+
+.chat {
+    position: absolute;
+    bottom: 75px;
+    left: 20px;
+    color: #465367;
+    font-size: 30px;
+    text-decoration: none;
+    transition: all 200ms ease-in-out 40ms;
+}
+
+    .chat:hover {
+        transform: scale(1.1);
+        color: #4592FF;
+    }
+
+/* ~~~~~~~~~~~~~~~ USER PROFILE > INNER => RIGHT ~~~~~~~~~~~~~~*/
+
+div.right {
+    padding: 40px;
+}
+
+    div.right h1 {
+        text-transform: uppercase;
+        font-size: 42px;
+        color: #465367;
+        margin-bottom: 30px;
+    }
+
+    div.right p {
+        color: #808BA8;
+    }
+
+nav.social {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 1000;
+}
+
+    nav.social h2 {
+        text-transform: uppercase;
+        color: #808BA8;
+        background-color: #4A5269;
+        line-height: 45px;
+    }
+
+    nav.social a {
+        position: absolute;
+        width: 25%;
+        height: 20px;
+        color: #fff;
+        font-size: 30px;
+        line-height: 90px;
+        text-decoration: none;
+        transition: all 200ms ease-in-out 40ms;
+        transform-origin: bottom;
+    }
+
+    nav.social span {
+        opacity: 0;
+        height: 0;
+        transition: all 200ms ease-in-out 30ms;
+    }
+
+    nav.social a:hover > span {
+        transition-delay: 200ms;
+        opacity: 1;
+        height: initial;
+    }
+
+    nav.social a:hover {
+        height: 90px;
+    }
+
+    nav.social a:nth-child(2) {
+        background-color: #1DA1F2;
+        left: 0;
+    }
+
+    nav.social a:nth-child(3) {
+        background-color: #45619D;
+        left: 25%;
+    }
+
+    nav.social a:nth-child(4) {
+        background-color: #EA4C89;
+        left: 50%;
+    }
+
+    nav.social a:nth-child(5) {
+        background-color: #004879;
+        left: 75%;
+    }
+
+/* ~~~~~~~~~~~~~~~ OTHER ~~~~~~~~~~~~~~*/
+.container {
+    position: relative;
+}
+
+    /* Make the image responsive */
+    .container img {
+        height: 100px;
+        width: 100px;
+        margin: 0 0 0 0;
+    }
+
+    /* Style the button and place it in the middle of the container/image */
+    .container .btn {
+        position: absolute;
+        transform: translate(1%, -100%);
+        -ms-transform: translate(-50%, -50%);
+        background: rgba(80, 80, 80, 0.4);
+        color: white;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        visibility: hidden;
+        width: 100px;
+        height: 100px;
+    }
+
+        .container:hover .btn {
+            visibility:visible;
+        }
+
+        .btn:hover {
+            background: rgba(0, 0, 0, 0.4)
+        }
+
+
+.labelprofile {
+    font-size: 26px;
+    color: black;
+    font-family: 'Century Gothic';
+    width: fit-content;
+}
+
+.pprofile {
+    font-size: 13px;
+    color: black;
+    font-family: 'Century Gothic';
+    margin-bottom: 5px;
+}
